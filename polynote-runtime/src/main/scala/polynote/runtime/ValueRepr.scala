@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
 import polynote.runtime
-import sun.misc.Cleaner
+//import sun.misc.Cleaner
 
 /**
   * A plain text representation of a value
@@ -71,9 +71,9 @@ object LazyDataRepr {
     val repr = LazyDataRepr(handleId, handle.dataType, knownSize)
 
     // if the repr object gets GC'ed, we can let the handle go as well
-    Cleaner.create(repr, new Runnable {
-      def run(): Unit = handles.remove(handleId)
-    })
+ //   Cleaner.create(repr, new Runnable {
+ //     def run(): Unit = handles.remove(handleId)
+ //   })
 
     repr
   }
@@ -166,6 +166,7 @@ object UpdatingDataRepr {
 
     val repr = UpdatingDataRepr(handleId, dataType)
 
+/*
     Cleaner.create(repr, new Runnable {
       def run(): Unit = {
         val handle = handles.get(handleId)
@@ -175,7 +176,7 @@ object UpdatingDataRepr {
         }
       }
     })
-
+*/
     repr
   }
 
@@ -261,6 +262,7 @@ object StreamingDataRepr {
 
     val repr = StreamingDataRepr(handleId, handle.dataType, handle.knownSize)
 
+/*
     Cleaner.create(repr, new Runnable {
       def run(): Unit = {
         val handle = handles.get(handleId)
@@ -274,7 +276,7 @@ object StreamingDataRepr {
         }
       }
     })
-
+*/
     repr
   }
 

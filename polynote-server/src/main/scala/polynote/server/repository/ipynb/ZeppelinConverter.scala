@@ -120,7 +120,7 @@ final case class ZeppelinOutput(
     case INCOMPLETE => None
     case ERROR =>
 
-      val iter = data.lines
+      val iter = data.linesIterator
       val firstException = iter.next().split(":")
 
       Option(Error(
@@ -133,7 +133,7 @@ final case class ZeppelinOutput(
   }
 
   def zepTableHTML(zepData: String): String = {
-    val itr = zepData.lines
+    val itr = zepData.linesIterator
     val header = itr.next().split("\t")
     val headerHTML = header.mkString("<th>", "</th><th>", "</th>")
     val rowsHTML = itr.toSeq.map(_.split("\t").mkString("<td>", "</td><td>", "</td>")).mkString("<tr>", "</tr><tr>", "</tr>")

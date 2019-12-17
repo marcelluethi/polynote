@@ -34,7 +34,7 @@ object Logging {
 
       override def error(msg: String)(implicit location: Location): UIO[Unit] = blocking.effectBlocking {
         out.synchronized {
-          val lines = msg.lines
+          val lines = msg.linesIterator
           out.print(Red)
           out.print(errorPrefix)
           out.println(lines.next())
@@ -77,7 +77,7 @@ object Logging {
               out.print(indent)
               out.println(el)
           }
-          err.prettyPrint.lines.foreach {
+          err.prettyPrint.linesIterator.foreach {
             line =>
               out.print(indent)
               out.print(line)
@@ -88,7 +88,7 @@ object Logging {
 
       override def warn(msg: String)(implicit location: Location): UIO[Unit] = blocking.effectBlocking {
         out.synchronized {
-          val lines = msg.lines
+          val lines = msg.linesIterator
           val firstLine = lines.next()
           out.print(warnPrefix)
           out.println(firstLine)
@@ -102,7 +102,7 @@ object Logging {
 
       override def info(msg: String)(implicit location: Location): UIO[Unit] = blocking.effectBlocking {
         out.synchronized {
-          val lines = msg.lines
+          val lines = msg.linesIterator
           val firstLine = lines.next()
           out.print(infoPrefix)
           out.println(firstLine)

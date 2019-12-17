@@ -54,7 +54,7 @@ class Server(kernelFactory: Kernel.Factory.Service) extends polynote.app.App wit
              |                __/ |
              |               |___/
              |
-             |""".stripMargin.lines.toList
+             |""".stripMargin.linesIterator.toList
       )
       .bindHttp(port, address)
       .withWebSockets(true)
