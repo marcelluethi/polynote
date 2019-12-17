@@ -13,13 +13,13 @@ import polynote.kernel.dependency.CoursierFetcher
 import polynote.kernel.environment.{Config, CurrentNotebook, CurrentRuntime, CurrentTask, Env, InterpreterEnvironment, PublishResult, PublishStatus}
 import polynote.kernel.interpreter.State.Root
 import polynote.kernel.interpreter.{Interpreter, State}
-import polynote.kernel.interpreter.scal.ScalaInterpreter
+import polynote.kernel.interpreter.scal.{JavaInterpreter, ScalaInterpreter}
 import polynote.kernel.logging.Logging
 import polynote.kernel.util.RefMap
 import polynote.messages.{ByteVector32, CellID, HandleType, Lazy, NotebookCell, Streaming, Updating, truncateTinyString}
 import polynote.runtime.{LazyDataRepr, ReprsOf, StreamingDataRepr, StringRepr, TableOp, UpdatingDataRepr, ValueRepr}
 import scodec.bits.ByteVector
-import zio.{Task, RIO, ZIO}
+import zio.{RIO, Task, ZIO}
 import zio.blocking.{Blocking, effectBlocking}
 import zio.clock.Clock
 import zio.interop.catz._
@@ -252,6 +252,7 @@ class LocalKernelFactory extends Kernel.Factory.LocalService {
     busyState    <- SignallingRef[Task, KernelBusyState](KernelBusyState(busy = true, alive = true))
     interpreters <- RefMap.empty[String, Interpreter]
     _            <- interpreters.getOrCreate("scala")(ScalaInterpreter().provideSomeM(Env.enrich[Blocking](compiler)))
+    _           <- interpreters.getOrCreate("java")(JavaInterpreter().provideSomeM(Env.enrich[Blocking](compiler)))
     interpState  <- Ref[Task].of[State](State.predef(State.Root, State.Root))
   } yield new LocalKernel(compiler, interpState, interpreters, busyState)
 
